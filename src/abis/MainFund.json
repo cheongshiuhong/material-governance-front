@@ -1,0 +1,224 @@
+[
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "callAddress",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes4",
+          "name": "selector",
+          "type": "bytes4"
+        }
+      ],
+      "name": "TransactCall",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "tokensAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "amounts",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "approveFrontOfficeForWithdrawals",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "enum IBaseFund.CallType",
+              "name": "callType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "callAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IBaseFund.CallInput",
+          "name": "callInput",
+          "type": "tuple"
+        }
+      ],
+      "name": "call",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAccounting",
+      "outputs": [
+        {
+          "internalType": "contract IAccounting",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCAO",
+      "outputs": [
+        {
+          "internalType": "contract ICAO",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFrontOffice",
+      "outputs": [
+        {
+          "internalType": "contract IFrontOffice",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFundToken",
+      "outputs": [
+        {
+          "internalType": "contract IMainFundToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getIncentivesManager",
+      "outputs": [
+        {
+          "internalType": "contract IIncentivesManager",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "enum IBaseFund.CallType",
+              "name": "callType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "callAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IBaseFund.CallInput[]",
+          "name": "callInputs",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "multiCall",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "opsGovernorAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setBaseFundHelpers",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "caoAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "tokenAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "accountingAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "frontOfficeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "incentivesManagerAddress",
+          "type": "address"
+        }
+      ],
+      "name": "setMainFundHelpers",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+]
