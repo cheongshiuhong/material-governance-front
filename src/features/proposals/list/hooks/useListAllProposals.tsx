@@ -47,7 +47,7 @@ const useListAllProposals = (): UseListAllProposalsReturn => {
             })
         );
         setAllProposals(batchedProposalsResponse);
-        setEarliestFetchedId(idsToFetch[idsToFetch.length - 1]);
+        setEarliestFetchedId(idsToFetch[idsToFetch.length - 1] || BigNumber.from(-1));
     };
 
     /** Effect for initial load when provider is ready */
@@ -86,7 +86,7 @@ const useListAllProposals = (): UseListAllProposalsReturn => {
     return {
         allProposals,
         total,
-        hasMore: !earliestFetchedId.eq(0),
+        hasMore: earliestFetchedId.gt(0),
         loadMore
     };
 };

@@ -22,13 +22,13 @@ const Argument = ({ type, value }: ArgumentProps): ReactElement => {
     // Array types
     if (type.slice(type.length - 2, type.length) === '[]') {
         return (
-            <div className="mb-1">
+            <>
                 {(value as unknown[]).map((each, index) => (
-                    <p key={index}>
+                    <span key={index}>
                         <Argument type={type.slice(0, type.length - 2)} value={each} />
-                    </p>
+                    </span>
                 ))}
-            </div>
+            </>
         );
     }
 

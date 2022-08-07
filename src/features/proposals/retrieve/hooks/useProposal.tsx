@@ -1,5 +1,6 @@
 // Types
 import type { Nullable, Proposal, Vote } from '@interfaces/general';
+import type { Event } from 'ethers';
 
 // Libraries
 import { useState, useEffect } from 'react';
@@ -62,9 +63,26 @@ const useProposal = (id: string): UseProposalReturn => {
                 const proposalResponse = await caoContract.getProposal(id);
                 setProposal({ id, ...proposalResponse });
 
-                // Get the votes for the proposal
+                // Get the votes for the proposal (batch by 5000 blocks)
                 const voteFilter = caoContract.filters.Vote(id);
-                const votesResponse = await caoContract.queryFilter(voteFilter);
+                const startBlock = proposalResponse.startBlock.toNumber();
+                const endBlock = proposalResponse.endBlock.toNumber();
+                const numBatches =
+                    Math.floor((endBlock - startBlock) / 5000) +
+                    ((endBlock - startBlock) % 5000 === 0 ? 0 : 1);
+                const votesResponse: Event[] = await Array(numBatches)
+                    .fill(1)
+                    .reduce(
+                        async (current, _, index) => [
+                            ...(await current),
+                            ...(await caoContract.queryFilter(
+                                voteFilter,
+                                startBlock + index * 5000,
+                                startBlock + (index + 1) * 5000
+                            ))
+                        ],
+                        Promise.resolve([]) as Promise<Event[]>
+                    );
                 const parsedVotes: Vote[] = [];
                 votesResponse.forEach((voteResponse) => {
                     parsedVotes.push({

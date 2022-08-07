@@ -73,7 +73,7 @@ const CreateProposalCall: FC<CreateProposalCallProps> = ({
             return;
         }
 
-        setEncodedCall({ contractAddress, encodedCallData, value: 0 });
+        setEncodedCall({ contractAddress, encodedCallData, value: values.value });
         setError('');
         setIsEditing(false);
     };
@@ -137,7 +137,9 @@ const CreateProposalCall: FC<CreateProposalCallProps> = ({
                             <p>
                                 <span className="font-semibold text-sm lg:text-base">Value</span>
                                 :&nbsp;
-                                <span className="text-sm lg:text-base">{encodedCall?.value}</span>
+                                <span className="text-sm lg:text-base">
+                                    {encodedCall?.value.toString()}
+                                </span>
                             </p>
                             <div className="w-full mt-4 flex items-center justify-end">
                                 <button

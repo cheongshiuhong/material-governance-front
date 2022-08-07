@@ -9,11 +9,11 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { IoMdAddCircleOutline } from 'react-icons/io';
 
 // Code
-import CreateProposalCall from './CreateProposalCall';
 import { useWeb3Context } from '@contexts/web3';
 import contracts from '@constants/contracts';
 import useRouter from '@hooks/useRouter';
 import useFunds from './hooks/useFunds';
+import CreateProposalCall from './CreateProposalCall';
 
 const MAX_BLOCKS_DELAY = 3 * 28800;
 const MIN_BLOCKS_DURATION = 1200;
@@ -203,6 +203,8 @@ const CreateProposal: FC = (): ReactElement => {
                     &nbsp;Add Function Call
                 </button>
             </div>
+
+            {/* Submit button */}
             <div className="w-full mt-4 space-y-4">
                 <button
                     onClick={onSubmit}

@@ -20,7 +20,6 @@ const ProposalDisplay: FC<ProposalDisplayProps> = ({
     proposal
 }: ProposalDisplayProps): ReactElement => {
     const { redirect } = useRouter();
-    // const [isCallInfoOpen, setIsCallInfoOpen] = useState<boolean>(false);
 
     return (
         <div className="overflow-x-auto px-4 py-2 bg-white shadow-md rounded-md">
@@ -50,63 +49,6 @@ const ProposalDisplay: FC<ProposalDisplayProps> = ({
                 className="w-full mt-3 px-2 py-2 bg-translucent-dark-gray text-white rounded-md">
                 View
             </button>
-            {/* {isCallInfoOpen && (
-                <>
-                    <div className="mt-2">
-                        <p className="font-semibold">Function Calls:</p>
-                    </div>
-                    <div className="mt-1 max-h-[360px] overflow-y-auto">
-                        {proposal.callAddresses.map((callAddress, index) => {
-                            const { contractName, name, inputs, decodedData } = decodeAbi(
-                                callAddress,
-                                proposal.callDatas[index]
-                            );
-                            return (
-                                <div
-                                    key={index}
-                                    className="w-full text-wrap mt-2 px-2 py-1 bg-translucent-light-gray">
-                                    <p className="text-xs sm:text-sm md:text-base">
-                                        <span className="font-semibold">Contract Name</span>:&nbsp;
-                                        {contractName}
-                                    </p>
-                                    <p className="text-xs sm:text-sm md:text-base">
-                                        <span className="font-semibold">Function Name</span>:&nbsp;
-                                        {name}
-                                    </p>
-                                    <p className="text-xs sm:text-sm md:text-base">
-                                        <span className="font-semibold">Call Address</span>:&nbsp;
-                                        {callAddress}
-                                    </p>
-                                    <p className="text-xs sm:text-sm md:text-base">
-                                        <span className="font-semibold">Value</span>:&nbsp;
-                                        {proposal.callValues[index].toString()}
-                                    </p>
-                                    <p className="text-xs sm:text-sm md:text-base">
-                                        <span className="font-semibold">Arguments</span>:&nbsp;
-                                        {inputs.map((input, index) => (
-                                            <div key={index}>
-                                                <span className="underline">{input.name}</span>
-                                                <span>
-                                                    :&nbsp;
-                                                    <Argument
-                                                        type={input.type}
-                                                        value={decodedData[index]}
-                                                    />
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </p>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </>
-            )}
-            <button
-                onClick={() => setIsCallInfoOpen(!isCallInfoOpen)}
-                className="w-full mt-3 px-2 py-2 bg-translucent-dark-gray text-white rounded-md">
-                {isCallInfoOpen ? <>Collapse</> : <>Open</>}
-            </button> */}
         </div>
     );
 };

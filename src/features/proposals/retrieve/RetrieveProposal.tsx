@@ -54,13 +54,16 @@ const RetrieveProposal: FC = (): ReactElement => {
             {/* Execution */}
             {isExecutable && <Execution execute={execute} />}
             {/* Voting */}
-            {!hasUserVoted && !votingPower.eq(0) && (
-                <Voting
-                    castVote={castVote}
-                    votingPower={votingPower}
-                    totalVotingPower={totalVotingPower}
-                />
-            )}
+            {!hasUserVoted &&
+                !votingPower.eq(0) &&
+                proposal.startBlock.lte(currentBlock) &&
+                proposal.endBlock.gte(currentBlock) && (
+                    <Voting
+                        castVote={castVote}
+                        votingPower={votingPower}
+                        totalVotingPower={totalVotingPower}
+                    />
+                )}
             {/* Basic details */}
             <div className="w-full px-3 py-2 overflow-x-auto bg-white shadow-md">
                 <p className="text-xs sm:text-sm md:text-base">

@@ -1,5 +1,6 @@
 // Libraries
 import { ethers } from 'ethers';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export type FunctionInput = {
     name: string;
@@ -35,5 +36,5 @@ export type DecodedFunctionCall = {
 export type EncodedFunctionCall = {
     contractAddress: string;
     encodedCallData: string;
-    value: number;
+    value: BigNumber;
 };

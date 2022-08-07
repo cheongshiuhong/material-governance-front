@@ -60,6 +60,7 @@ const InputArray: FC<InputArrayProps> = ({
                     {input.name} ({input.type})
                 </label>
                 <button
+                    type="button"
                     onClick={addElement}
                     className="px-3 flex items-center justify-center bg-translucent-light-gray rounded-xl">
                     <GrAdd />
