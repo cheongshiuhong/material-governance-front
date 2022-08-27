@@ -1,7 +1,7 @@
 // Types
 import type { Contract } from 'ethers';
-import { Nullable } from '@interfaces/general';
-import { AddressesOptions } from '../interfaces';
+import type { Nullable } from '@interfaces/general';
+import type { AddressesOptions } from '../interfaces';
 
 // Libraries
 import { useState, useEffect } from 'react';

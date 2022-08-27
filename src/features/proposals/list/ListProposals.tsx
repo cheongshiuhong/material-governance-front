@@ -18,7 +18,7 @@ import ProposalDisplay from './ProposalDisplay';
  */
 const ListProposals: FC = (): ReactElement => {
     const { allProposals, total, hasMore, loadMore } = useListAllProposals();
-    const { activeProposals } = useListActiveProposals();
+    // const { activeProposals } = useListActiveProposals();
     const { redirect } = useRouter();
     const [tab, setTab] = useState<number>(0);
 
@@ -52,7 +52,7 @@ const ListProposals: FC = (): ReactElement => {
             </div>
             <div className="w-full space-y-6">
                 {/* Active proposals */}
-                {tab === 0 &&
+                {/* {tab === 0 &&
                     (activeProposals.length ? (
                         activeProposals.map((activeProposal) => (
                             <ProposalDisplay
@@ -62,7 +62,7 @@ const ListProposals: FC = (): ReactElement => {
                         ))
                     ) : (
                         <p>No active proposals.</p>
-                    ))}
+                    ))} */}
                 {/* Historical proposals */}
                 {tab === 1 && (
                     <>

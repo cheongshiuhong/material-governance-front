@@ -64,80 +64,81 @@ const useProposal = (id: string): UseProposalReturn => {
                 setProposal({ id, ...proposalResponse });
 
                 // Get the votes for the proposal (batch by 5000 blocks)
-                const voteFilter = caoContract.filters.Vote(id);
-                const startBlock = proposalResponse.startBlock.toNumber();
-                const endBlock = proposalResponse.endBlock.toNumber();
-                const numBatches =
-                    Math.floor((endBlock - startBlock) / 5000) +
-                    ((endBlock - startBlock) % 5000 === 0 ? 0 : 1);
-                const votesResponse: Event[] = await Array(numBatches)
-                    .fill(1)
-                    .reduce(
-                        async (current, _, index) => [
-                            ...(await current),
-                            ...(await caoContract.queryFilter(
-                                voteFilter,
-                                startBlock + index * 5000,
-                                startBlock + (index + 1) * 5000
-                            ))
-                        ],
-                        Promise.resolve([]) as Promise<Event[]>
-                    );
-                const parsedVotes: Vote[] = [];
-                votesResponse.forEach((voteResponse) => {
-                    parsedVotes.push({
-                        voter: voteResponse.args?.voter as string,
-                        direction: voteResponse.args?.direction as number,
-                        votingPower: voteResponse.args?.votingPower as BigNumber,
-                        reason: voteResponse.args?.reason as string
-                    });
-                });
-                setVotes(parsedVotes);
+                // const voteFilter = caoContract.filters.Vote(id);
+                // const startBlock = proposalResponse.startBlock.toNumber();
+                // const endBlock = proposalResponse.endBlock.toNumber();
+                // const numBatches =
+                //     Math.floor((endBlock - startBlock) / 5000) +
+                //     ((endBlock - startBlock) % 5000 === 0 ? 0 : 1);
+                // console.log(numBatches);
+                // const votesResponse: Event[] = await Array(numBatches)
+                //     .fill(1)
+                //     .reduce(
+                //         async (current, _, index) => [
+                //             ...(await current),
+                //             ...(await caoContract.queryFilter(
+                //                 voteFilter,
+                //                 startBlock + index * 5000,
+                //                 startBlock + (index + 1) * 5000
+                //             ))
+                //         ],
+                //         Promise.resolve([]) as Promise<Event[]>
+                //     );
+                // const parsedVotes: Vote[] = [];
+                // votesResponse.forEach((voteResponse) => {
+                //     parsedVotes.push({
+                //         voter: voteResponse.args?.voter as string,
+                //         direction: voteResponse.args?.direction as number,
+                //         votingPower: voteResponse.args?.votingPower as BigNumber,
+                //         reason: voteResponse.args?.reason as string
+                //     });
+                // });
+                // setVotes(parsedVotes);
 
-                // Subscribe to votes
-                caoContract.on(
-                    voteFilter,
-                    async (
-                        _,
-                        voter: string,
-                        direction: number,
-                        votingPower: BigNumber,
-                        reason: string
-                    ) => {
-                        // Update the votes
-                        setVotes((votes) =>
-                            votes.some((vote) => vote.voter === voter)
-                                ? votes
-                                : [...votes, { voter, direction, votingPower, reason }]
-                        );
+                // // Subscribe to votes
+                // caoContract.on(
+                //     voteFilter,
+                //     async (
+                //         _,
+                //         voter: string,
+                //         direction: number,
+                //         votingPower: BigNumber,
+                //         reason: string
+                //     ) => {
+                //         // Update the votes
+                //         setVotes((votes) =>
+                //             votes.some((vote) => vote.voter === voter)
+                //                 ? votes
+                //                 : [...votes, { voter, direction, votingPower, reason }]
+                //         );
 
-                        // Check if executable
-                        const isExecutableResponse = await caoContract.getIsProposalExecutable(id);
-                        setIsExecutable(isExecutableResponse);
-                    }
-                );
+                //         // Check if executable
+                //         const isExecutableResponse = await caoContract.getIsProposalExecutable(id);
+                //         setIsExecutable(isExecutableResponse);
+                //     }
+                // );
 
-                // Subscribe to executions
-                caoContract.on(caoContract.filters.ProposalExecuted(id), async (_) => {
-                    setProposal({ id, ...(await caoContract.getProposal(id)) });
-                    setIsExecutable(await caoContract.getIsProposalExecutable(id));
-                });
+                // // Subscribe to executions
+                // caoContract.on(caoContract.filters.ProposalExecuted(id), async (_) => {
+                //     setProposal({ id, ...(await caoContract.getProposal(id)) });
+                //     setIsExecutable(await caoContract.getIsProposalExecutable(id));
+                // });
 
                 // Get the voting power if past start block
-                if (proposalResponse.startBlock.lt(currentBlockResponse)) {
-                    setVotingPower(
-                        await caoTokenContract.getPastVotes(
-                            userAddress,
-                            proposalResponse.startBlock
-                        )
-                    );
-                    setTotalVotingPower(
-                        await caoTokenContract.getPastTotalSupply(proposalResponse.startBlock)
-                    );
+                // if (proposalResponse.startBlock.lt(currentBlockResponse)) {
+                //     setVotingPower(
+                //         await caoTokenContract.getPastVotes(
+                //             userAddress,
+                //             proposalResponse.startBlock
+                //         )
+                //     );
+                //     setTotalVotingPower(
+                //         await caoTokenContract.getPastTotalSupply(proposalResponse.startBlock)
+                //     );
 
-                    // Check if executable
-                    setIsExecutable(await caoContract.getIsProposalExecutable(id));
-                }
+                //     // Check if executable
+                //     setIsExecutable(await caoContract.getIsProposalExecutable(id));
+                // }
             } catch (err) {
                 console.error(err);
             } finally {
