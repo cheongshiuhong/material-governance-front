@@ -21,15 +21,15 @@ type UseListActiveProposalsReturn = {
  * @returns {UseListActiveProposalsReturn} - The proposals details object.
  */
 const useListActiveProposals = (): UseListActiveProposalsReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [activeProposals, setActiveProposals] = useState<Proposal[]>([]);
 
     /** Effect for initial load when provider is ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider) return;
-            const caoContract = contracts.cao.connect(provider);
+            if (!readProvider) return;
+            const caoContract = contracts.cao.connect(readProvider);
 
             // Fetch the current active proposals
             const activeProposalsIdsResponse: BigNumber[] =
@@ -58,10 +58,10 @@ const useListActiveProposals = (): UseListActiveProposalsReturn => {
         loadInitial();
 
         return () => {
-            provider && provider.removeAllListeners();
+            readProvider && readProvider.removeAllListeners();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider]);
+    }, [readProvider]);
 
     return { activeProposals };
 };

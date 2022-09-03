@@ -33,7 +33,7 @@ type UseAccountingReturn = {
  * @returns {UseAccountingReturn} - The accounting details.
  */
 const useAccounting = (fundDetails: Nullable<FundDetails>): UseAccountingReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [accountingFTBalance, setAccountingFTBalance] = useState<
         UseAccountingReturn['accountingFTBalance']
@@ -49,12 +49,12 @@ const useAccounting = (fundDetails: Nullable<FundDetails>): UseAccountingReturn 
     /** Effect for initial load when provider and address are ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider || !fundDetails) return;
+            if (!readProvider || !fundDetails) return;
             const mainFundTokenContract = contracts.mainFundToken
-                .connect(provider)
+                .connect(readProvider)
                 .attach(fundDetails.mainFundTokenAddress);
             const accountingContract = contracts.accounting
-                .connect(provider)
+                .connect(readProvider)
                 .attach(fundDetails.accountingAddress);
 
             // Fetch the details
@@ -80,7 +80,7 @@ const useAccounting = (fundDetails: Nullable<FundDetails>): UseAccountingReturn 
         };
 
         loadInitial();
-    }, [provider, fundDetails]);
+    }, [readProvider, fundDetails]);
 
     return {
         accountingFTBalance,

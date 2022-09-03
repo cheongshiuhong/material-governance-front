@@ -21,8 +21,8 @@ type UseDelegateeReturn = {
  * @returns {UseDelegateeReturn} - The delegatee and the delegatee setter.
  */
 const useDelegatee = (): UseDelegateeReturn => {
-    const { provider, userAddress } = useWeb3Context();
-    const caoTokenContract = provider && contracts.caoToken.connect(provider.getSigner());
+    const { writeProvider, userAddress } = useWeb3Context();
+    const caoTokenContract = writeProvider && contracts.caoToken.connect(writeProvider.getSigner());
 
     const [delegatee, setDelegatee] = useState<string | null>(null);
 
@@ -47,7 +47,7 @@ const useDelegatee = (): UseDelegateeReturn => {
      * @param {string} newDelegatee - The new delegatee to be set.
      */
     const delegate = async (newDelegatee: string) => {
-        if (!provider || !caoTokenContract) return;
+        if (!writeProvider || !caoTokenContract) return;
 
         // Make the transaction
         await caoTokenContract.functions.delegate(newDelegatee);

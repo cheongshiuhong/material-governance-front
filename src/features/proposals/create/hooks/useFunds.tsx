@@ -22,7 +22,7 @@ type UseFundsReturn = {
  * @returns {UseFundsReturn} - The funds' details.
  */
 const useFunds = (): UseFundsReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [addressesOptions, setAddressesOptions] =
         useState<UseFundsReturn['addressesOptions']>(null);
@@ -93,10 +93,10 @@ const useFunds = (): UseFundsReturn => {
     /** Effect for initial load when provider is ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider) return;
-            const caoParametersContract = contracts.caoParameters.connect(provider);
-            const mainFundContract = contracts.mainFund.connect(provider);
-            const mainFundTokenContract = contracts.mainFundToken.connect(provider);
+            if (!readProvider) return;
+            const caoParametersContract = contracts.caoParameters.connect(readProvider);
+            const mainFundContract = contracts.mainFund.connect(readProvider);
+            const mainFundTokenContract = contracts.mainFundToken.connect(readProvider);
 
             // Get the funds addresses options
             const addressesOptionsResponse = await _fetchAddressesOptions(
@@ -109,7 +109,7 @@ const useFunds = (): UseFundsReturn => {
 
         loadInitial();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider]);
+    }, [readProvider]);
 
     return { addressesOptions };
 };

@@ -29,7 +29,7 @@ type UseCAOReturn = {
  * @returns {UseCAOReturn} - The cao's details.
  */
 const useCAO = (): UseCAOReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [reserveTokens, setReserveTokens] = useState<UseCAOReturn['reserveTokens']>([]);
     const [funds, setFunds] = useState<UseCAOReturn['funds']>([]);
@@ -96,11 +96,11 @@ const useCAO = (): UseCAOReturn => {
     /** Effect for initial load when provider is ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider) return;
-            const caoParametersContract = contracts.caoParameters.connect(provider);
-            const erc20Contract = contracts.erc20.connect(provider);
-            const mainFundContract = contracts.mainFund.connect(provider);
-            const mainFundTokenContract = contracts.mainFundToken.connect(provider);
+            if (!readProvider) return;
+            const caoParametersContract = contracts.caoParameters.connect(readProvider);
+            const erc20Contract = contracts.erc20.connect(readProvider);
+            const mainFundContract = contracts.mainFund.connect(readProvider);
+            const mainFundTokenContract = contracts.mainFundToken.connect(readProvider);
 
             // Get the reserve tokens and funds
             const [reserveTokensResponse, fundsResponse] = await Promise.all([
@@ -114,7 +114,7 @@ const useCAO = (): UseCAOReturn => {
 
         loadInitial();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider]);
+    }, [readProvider]);
 
     return { reserveTokens, funds };
 };

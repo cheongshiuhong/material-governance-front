@@ -27,7 +27,7 @@ type UseIncentivesManagerReturn = {
  * @returns {UseIncentivesManagerReturn} - The incentives manager details.
  */
 const useIncentivesManager = (fundDetails: Nullable<FundDetails>): UseIncentivesManagerReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [incentives, setIncentives] = useState<UseIncentivesManagerReturn['incentives']>([]);
 
@@ -58,14 +58,14 @@ const useIncentivesManager = (fundDetails: Nullable<FundDetails>): UseIncentives
     /** Effect for initial load when provider and address are ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider || !fundDetails) return;
+            if (!readProvider || !fundDetails) return;
             const mainFundTokenContract = contracts.mainFundToken
-                .connect(provider)
+                .connect(readProvider)
                 .attach(fundDetails.mainFundTokenAddress);
             const incentivesManagerContract = contracts.incentivesManager
-                .connect(provider)
+                .connect(readProvider)
                 .attach(fundDetails.incentivesManagerAddress);
-            const incentiveContract = contracts.iincentive.connect(provider);
+            const incentiveContract = contracts.iincentive.connect(readProvider);
 
             const incentivesResponse = await _fetchIncentives(
                 mainFundTokenContract,
@@ -77,7 +77,7 @@ const useIncentivesManager = (fundDetails: Nullable<FundDetails>): UseIncentives
         };
 
         loadInitial();
-    }, [provider, fundDetails]);
+    }, [readProvider, fundDetails]);
 
     return { incentives };
 };

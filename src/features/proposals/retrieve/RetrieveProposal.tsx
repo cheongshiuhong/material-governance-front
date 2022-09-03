@@ -52,24 +52,19 @@ const RetrieveProposal: FC = (): ReactElement => {
     return (
         <div className="w-full max-w-[980px] mx-auto space-y-3">
             {/* Execution */}
-            {/* {isExecutable && <Execution execute={execute} />} */}
-            <Execution execute={execute} />
+            {isExecutable && <Execution execute={execute} />}
             {/* Voting */}
-            {/* {!hasUserVoted &&
+            {!hasUserVoted &&
                 !votingPower.eq(0) &&
                 proposal.startBlock.lte(currentBlock) &&
-                proposal.endBlock.gte(currentBlock) && (
+                proposal.endBlock.gte(currentBlock) &&
+                proposal.status === 0 && (
                     <Voting
                         castVote={castVote}
                         votingPower={votingPower}
                         totalVotingPower={totalVotingPower}
                     />
-                )} */}
-            <Voting
-                castVote={castVote}
-                votingPower={votingPower}
-                totalVotingPower={totalVotingPower}
-            />
+                )}
             {/* Basic details */}
             <div className="w-full px-3 py-2 overflow-x-auto bg-white shadow-md">
                 <p className="text-xs sm:text-sm md:text-base">

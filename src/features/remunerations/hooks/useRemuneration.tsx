@@ -30,7 +30,7 @@ type UseRemunerationReturn = {
  * @returns {UseRemunerationReturn} - The user's remunerations details.
  */
 const useRemuneration = (): UseRemunerationReturn => {
-    const { provider, userAddress } = useWeb3Context();
+    const { readProvider, writeProvider, userAddress } = useWeb3Context();
 
     const [details, setDetails] = useState<UseRemunerationReturn['details']>(null);
     const [tokensClaimable, setTokensClaimable] = useState<
@@ -75,11 +75,11 @@ const useRemuneration = (): UseRemunerationReturn => {
     /** Effect for initial load when provider is ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider || !userAddress) return;
-            const hrContract = contracts.hr.connect(provider);
-            const caoContract = contracts.cao.connect(provider);
-            const caoParametersContract = contracts.caoParameters.connect(provider);
-            const erc20Contract = contracts.erc20.connect(provider);
+            if (!readProvider || !userAddress) return;
+            const hrContract = contracts.hr.connect(readProvider);
+            const caoContract = contracts.cao.connect(readProvider);
+            const caoParametersContract = contracts.caoParameters.connect(readProvider);
+            const erc20Contract = contracts.erc20.connect(readProvider);
 
             // Get the details
             const [employeeResponse, [currentRemunerationResponse], tokensClaimableResponse] =
@@ -111,7 +111,7 @@ const useRemuneration = (): UseRemunerationReturn => {
 
         loadInitial();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider, userAddress]);
+    }, [readProvider, userAddress]);
 
     /**
      * Function for the user to claim the accrued remunerations
@@ -119,8 +119,8 @@ const useRemuneration = (): UseRemunerationReturn => {
      * @param {number} tokenAddress - The address of the token to claim.
      */
     const claim = async (tokenAddress: string): Promise<void> => {
-        if (!provider) return;
-        await contracts.cao.connect(provider.getSigner()).redeemRemuneration(tokenAddress);
+        if (!writeProvider) return;
+        await contracts.cao.connect(writeProvider.getSigner()).redeemRemuneration(tokenAddress);
     };
 
     return { details, tokensClaimable, claim };

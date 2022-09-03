@@ -19,8 +19,8 @@ type UseVotingPowerReturn = {
  * @returns {UseVotingPowerReturn} - The detail about voting power.
  */
 const UseVotingPower = (): UseVotingPowerReturn => {
-    const { provider, userAddress } = useWeb3Context();
-    const caoTokenContract = provider && contracts.caoToken.connect(provider);
+    const { readProvider, userAddress } = useWeb3Context();
+    const caoTokenContract = readProvider && contracts.caoToken.connect(readProvider);
 
     const [votingPower, setVotingPower] = useState<BigNumber>(BigNumber.from(0));
     const [totalVotingPower, setTotalVotingPower] = useState<BigNumber>(BigNumber.from(0));

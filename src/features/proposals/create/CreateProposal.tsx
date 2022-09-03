@@ -24,7 +24,7 @@ const MIN_BLOCKS_DURATION = 1200;
  * @returns {ReactElement} - The component to create a proposal.
  */
 const CreateProposal: FC = (): ReactElement => {
-    const { provider } = useWeb3Context();
+    const { writeProvider } = useWeb3Context();
     const { redirect } = useRouter();
     const { addressesOptions } = useFunds();
     const [description, setDescription] = useState<string>('');
@@ -87,13 +87,13 @@ const CreateProposal: FC = (): ReactElement => {
         }
 
         // Check for provider
-        if (!provider) {
+        if (!writeProvider) {
             setError('Error: Provider not initialized');
             return;
         }
 
         try {
-            await contracts.cao.connect(provider.getSigner()).functions.createProposal(
+            await contracts.cao.connect(writeProvider.getSigner()).functions.createProposal(
                 description,
                 blocksDelay,
                 blocksDuration,

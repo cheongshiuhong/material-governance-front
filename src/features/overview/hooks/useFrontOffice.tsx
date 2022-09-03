@@ -32,7 +32,7 @@ type UseFrontOfficeReturn = {
  * @returns {UseFrontOfficeReturn} - The front office details.
  */
 const useFrontOffice = (fundDetails: Nullable<FundDetails>): UseFrontOfficeReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [frontOfficeFTBalance, setFrontOfficeFTBalance] = useState<
         UseFrontOfficeReturn['frontOfficeFTBalance']
@@ -69,19 +69,19 @@ const useFrontOffice = (fundDetails: Nullable<FundDetails>): UseFrontOfficeRetur
     /** Effect for initial load when provider and address are ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider || !fundDetails) return;
-            const erc20Contract = contracts.erc20.connect(provider);
+            if (!readProvider || !fundDetails) return;
+            const erc20Contract = contracts.erc20.connect(readProvider);
             const mainFundTokenContract = contracts.mainFundToken
-                .connect(provider)
+                .connect(readProvider)
                 .attach(fundDetails.mainFundTokenAddress);
             const frontOfficeContract = contracts.frontOffice
-                .connect(provider)
+                .connect(readProvider)
                 .attach(fundDetails.frontOfficeAddress);
 
             // Fetch the parameters address
             const parametersAddress = await frontOfficeContract.getParametersAddress();
             const frontOfficeParametersContract = contracts.frontOfficeParameters
-                .connect(provider)
+                .connect(readProvider)
                 .attach(parametersAddress);
 
             const [
@@ -101,7 +101,7 @@ const useFrontOffice = (fundDetails: Nullable<FundDetails>): UseFrontOfficeRetur
 
         loadInitial();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider, fundDetails]);
+    }, [readProvider, fundDetails]);
 
     return { frontOfficeFTBalance, allowedTokens, maxSingleWithdrawalFundTokenAmount };
 };

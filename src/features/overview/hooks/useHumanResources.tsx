@@ -29,7 +29,7 @@ type UseHumanResourcesReturn = {
  * @returns {UseHumanResourcesReturn} - The hr's details.
  */
 const useHumanResources = (): UseHumanResourcesReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [employees, setEmployees] = useState<UseHumanResourcesReturn['employees']>([]);
     const [unredeemedExEmployees, setUnredeemedExEmployees] = useState<
@@ -85,8 +85,8 @@ const useHumanResources = (): UseHumanResourcesReturn => {
     /** Effect for initial load when provider is ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider) return;
-            const hrContract = contracts.hr.connect(provider);
+            if (!readProvider) return;
+            const hrContract = contracts.hr.connect(readProvider);
 
             // Get the employees
             const [employeesResponse, unredeemedExEmployeesResponse] = await Promise.all([
@@ -100,7 +100,7 @@ const useHumanResources = (): UseHumanResourcesReturn => {
 
         loadInitial();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider]);
+    }, [readProvider]);
 
     return { employees, unredeemedExEmployees };
 };

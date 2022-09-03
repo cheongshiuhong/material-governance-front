@@ -24,7 +24,7 @@ type UseListAllProposalsReturn = {
  * @returns {UseListAllProposalsReturn} - The proposals details object.
  */
 const useListAllProposals = (): UseListAllProposalsReturn => {
-    const { provider } = useWeb3Context();
+    const { readProvider } = useWeb3Context();
 
     const [allProposals, setAllProposals] = useState<Proposal[]>([]);
     const [total, setTotal] = useState<BigNumber>(BigNumber.from(0));
@@ -37,8 +37,8 @@ const useListAllProposals = (): UseListAllProposalsReturn => {
      * @returns {Promise<void>} - Does not return anything.
      */
     const _fetchProposals = async (idsToFetch: BigNumber[]): Promise<void> => {
-        if (!provider) return;
-        const caoContract = contracts.cao.connect(provider);
+        if (!readProvider) return;
+        const caoContract = contracts.cao.connect(readProvider);
 
         const batchedProposalsResponse = await Promise.all(
             idsToFetch.map(async (id) => {
@@ -53,8 +53,8 @@ const useListAllProposals = (): UseListAllProposalsReturn => {
     /** Effect for initial load when provider is ready */
     useEffect(() => {
         const loadInitial = async (): Promise<void> => {
-            if (!provider) return;
-            const caoContract = contracts.cao.connect(provider);
+            if (!readProvider) return;
+            const caoContract = contracts.cao.connect(readProvider);
 
             const numProposalsResponse: BigNumber = await caoContract.getNumProposals();
             const numToFetch = numProposalsResponse.lt(10) ? numProposalsResponse.toNumber() : 10;
@@ -68,7 +68,7 @@ const useListAllProposals = (): UseListAllProposalsReturn => {
 
         loadInitial();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [provider]);
+    }, [readProvider]);
 
     /** Loads more proposals */
     const loadMore = async (): Promise<void> => {
